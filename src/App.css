@@ -22,3 +22,25 @@
   display: block;
   margin-bottom: 5px;
 }
+
+.aluno-consultado {
+  background-color: #fff;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.aluno-consultado h3 {
+  font-size: 18px;
+}
+
+.search-container {
+  margin-bottom: 10px;
+}
+
+.aluno-info {
+  margin-bottom: 20px;
+}
+
+.aluno-info-container {
+  margin-top: 20px;
+}
