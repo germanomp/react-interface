@@ -1,25 +1,40 @@
-import logo from './logo.svg';
+/* eslint-disable no-undef */
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import './App.css';
 
-function App() {
+function List() {
+  const [alunos, setAlunos] = useState([]); 
+
+  useEffect(() => {
+    axios.get('http://localhost:3000/alunos')
+      .then(response => {
+
+        const alunos = response.data;
+        setAlunos(alunos); 
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="list-container">
+      <h2 className="list-title">Lista de Alunos</h2>
+      <ul>
+        {alunos.map(aluno => (
+          <li key={aluno._id} className="list-item">
+            <span>Nome: {aluno.nome}</span>
+            <span>Idade: {aluno.idade}</span>
+            <span>Curso: {aluno.curso}</span>
+            <span>Email: {aluno.email}</span>
+            <span>Endereço: {aluno.endereco}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
+  
 }
 
-export default App;
+export default List;
