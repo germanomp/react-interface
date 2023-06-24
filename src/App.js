@@ -7,6 +7,7 @@ function List() {
   const [alunos, setAlunos] = useState([]);
   const [alunoId, setAlunoId] = useState('');
   const [alunoConsultado, setAlunoConsultado] = useState(null);
+  const [alunoAtualizado, setAlunoAtualizado] = useState(null);
 
   useEffect(() => {
     axios.get('http://localhost:3000/alunos')
@@ -28,6 +29,33 @@ function List() {
       .catch(error => {
         console.error(error);
       });
+  };
+
+  const handleUpdate = (event) => {
+    event.preventDefault();
+
+    axios.put(`http://localhost:3000/alunos/${alunoConsultado._id.$oid}`, alunoConsultado)
+      .then(response => {
+        const aluno = response.data;
+        setAlunoAtualizado(aluno);
+        setAlunoConsultado(null);
+        updateAlunoList(aluno); // Chamada da nova função para atualizar a lista de alunos
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  };
+
+  // Função para atualizar a lista de alunos após a atualização de um aluno
+  const updateAlunoList = (alunoAtualizado) => {
+    const updatedAlunos = alunos.map(aluno => {
+      if (aluno._id === alunoAtualizado._id) {
+        return alunoAtualizado;
+      }
+      return aluno;
+    });
+
+    setAlunos(updatedAlunos);
   };
 
   return (
@@ -55,6 +83,56 @@ function List() {
               <span><strong>Email:</strong> {alunoConsultado.email}</span><br/>
               <span><strong>Endereço:</strong> {alunoConsultado.endereco}</span>
             </div>
+
+            <h3>Atualizar Informações:</h3>
+            <form className="form-container" onSubmit={handleUpdate}>
+              <label>
+                Nome:
+                <input
+                  type="text"
+                  value={alunoConsultado.nome}
+                  onChange={e => setAlunoConsultado({ ...alunoConsultado, nome: e.target.value })}
+                />
+              </label>
+              <br/>
+              <label>
+                Idade:
+                <input
+                  type="number"
+                  value={alunoConsultado.idade}
+                  onChange={e => setAlunoConsultado({ ...alunoConsultado, idade: e.target.value })}
+                />
+              </label>
+              <br/>
+              <label>
+                Curso:
+                <input
+                  type="text"
+                  value={alunoConsultado.curso}
+                  onChange={e => setAlunoConsultado({ ...alunoConsultado, curso: e.target.value })}
+                />
+              </label>
+              <br/>
+              <label>
+                Email:
+                <input
+                  type="email"
+                  value={alunoConsultado.email}
+                  onChange={e => setAlunoConsultado({ ...alunoConsultado, email: e.target.value })}
+                />
+              </label>
+              <br/>
+              <label>
+                Endereço:
+                <input
+                  type="text"
+                  value={alunoConsultado.endereco}
+                  onChange={e => setAlunoConsultado({ ...alunoConsultado, endereco: e.target.value })}
+                />
+              </label>
+              <br/>
+              <button type="submit">Atualizar</button>
+            </form>
           </div>
         ) : (
           <ul>
@@ -72,6 +150,19 @@ function List() {
           </ul>
         )}
       </div>
+
+      {alunoAtualizado && (
+        <div className="aluno-consultado">
+          <h3>Informações do Aluno Atualizado:</h3>
+          <div className="aluno-info">
+            <span><strong>Nome:</strong> {alunoAtualizado.nome}</span><br/>
+            <span><strong>Idade:</strong> {alunoAtualizado.idade}</span><br/>
+            <span><strong>Curso:</strong> {alunoAtualizado.curso}</span><br/>
+            <span><strong>Email:</strong> {alunoAtualizado.email}</span><br/>
+            <span><strong>Endereço:</strong> {alunoAtualizado.endereco}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

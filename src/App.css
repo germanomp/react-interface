@@ -42,5 +42,23 @@
 }
 
 .aluno-info-container {
+  margin-top: 20px; 
+}
+
+.form-container {
   margin-top: 20px;
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+.form-container input {
+  width: 30%;
+  padding: 8px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  margin-left: 5px;
 }
